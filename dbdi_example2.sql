@@ -66,3 +66,27 @@ VALUES
 ('DADT', 2),
 ('DDAT', 2),
 ('DWTY', 2);
+
+CREATE TABLE file_uploads(
+	id BIGINT(20) AUTO_INCREMENT,
+    applicant_id BIGINT(20),
+    file_type VARCHAR(255),
+    file_location VARCHAR(255),
+    PRIMARY KEY(id),
+    UNIQUE(file_location)
+);
+
+INSERT INTO file_uploads(applicant_id, file_type, file_location)
+VALUES
+(1, 'ic', 'ic/00-123456.png'),
+(1, 'photo', 'photo/00-123456.png'),
+(2, 'ic', 'ic/00-111222.png'),
+(2, 'result', 'result/00-111222_1.png'),
+(2, 'result', 'result/00-111222_2.png');
+
+SELECT * FROM applicants_programmes, applicants
+WHERE applicants_programmes.applicant_id=applicants.id AND applicants.id=1;
+
+SELECT ap.programme_short_code, a.ic_number, pd.first_name, pd.last_name
+FROM applicants_programmes ap, applicants a, personal_details pd
+WHERE ap.applicant_id=a.id AND a.id=1 AND a.id=pd.applicant_id;
