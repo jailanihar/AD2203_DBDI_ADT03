@@ -74,6 +74,7 @@ CREATE TABLE file_uploads(
     file_type VARCHAR(255),
     file_location VARCHAR(255),
     PRIMARY KEY(id),
+    FOREIGN KEY(applicant_id) REFERENCES applicants(id),
     UNIQUE(file_location)
 );
 
