@@ -18,9 +18,9 @@ CREATE TABLE applicants (
 
 CREATE TABLE personal_details(
 	id BIGINT(20) AUTO_INCREMENT,
-    applicant_id BIGINT(20),
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
+    applicant_id BIGINT(20) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     date_of_birth DATE,
     phone_number VARCHAR(100),
     PRIMARY KEY(id),
@@ -40,14 +40,14 @@ VALUES
 
 CREATE TABLE programmes (
 	short_code VARCHAR(10),
-    description VARCHAR(255),
+    description VARCHAR(255) NOT NULL,
     PRIMARY KEY (short_code)
 );
 
 CREATE TABLE applicants_programmes(
 	id BIGINT(20) AUTO_INCREMENT,
-    programme_short_code VARCHAR(10),
-    applicant_id BIGINT(20),
+    programme_short_code VARCHAR(10) NOT NULL,
+    applicant_id BIGINT(20) NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(programme_short_code) REFERENCES programmes(short_code),
     FOREIGN KEY(applicant_id) REFERENCES applicants(id),
@@ -70,9 +70,9 @@ VALUES
 
 CREATE TABLE file_uploads(
 	id BIGINT(20) AUTO_INCREMENT,
-    applicant_id BIGINT(20),
-    file_type VARCHAR(255),
-    file_location VARCHAR(255),
+    applicant_id BIGINT(20) NOT NULL,
+    file_type VARCHAR(255) NOT NULL,
+    file_location VARCHAR(255) NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(applicant_id) REFERENCES applicants(id),
     UNIQUE(file_location)
