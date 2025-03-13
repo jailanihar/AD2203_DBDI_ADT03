@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS personal_details;
 DROP TABLE IF EXISTS applicants_programmes;
+DROP TABLE IF EXISTS file_uploads;
 DROP TABLE IF EXISTS programmes;
 DROP TABLE IF EXISTS applicants;
 
