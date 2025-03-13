@@ -1,4 +1,6 @@
 DROP TABLE IF EXISTS personal_details;
+DROP TABLE IF EXISTS applicants_programmes;
+DROP TABLE IF EXISTS programmes;
 DROP TABLE IF EXISTS applicants;
 
 CREATE TABLE applicants (
@@ -51,3 +53,16 @@ CREATE TABLE applicants_programmes(
     UNIQUE(programme_short_code, applicant_id)
 );
 
+INSERT INTO programmes VALUES
+('DADT', 'Diploma in Applications Development'),
+('DWTY', 'Diploma in Web Technologies'),
+('DCNG', 'Diploma in Cloud and Networking'),
+('DDAT', 'Diploma in Data Analytics');
+
+INSERT INTO applicants_programmes(programme_short_code, applicant_id)
+VALUES
+('DADT', 1),
+('DWTY', 1),
+('DADT', 2),
+('DDAT', 2),
+('DWTY', 2);
