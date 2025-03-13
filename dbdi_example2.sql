@@ -33,4 +33,21 @@ INSERT INTO personal_details
 (applicant_id, first_name, last_name, date_of_birth, phone_number)
 VALUES
 (1, 'Antah', 'Hatna', '2000-01-01', '673123456'),
-(1, 'Hatna', 'Antah', '2000-02-01', '0673123456');
+(2, 'Berantah', 'Hatnareb', '2002-03-20', '044123456789');
+
+CREATE TABLE programmes (
+	short_code VARCHAR(10),
+    description VARCHAR(255),
+    PRIMARY KEY (short_code)
+);
+
+CREATE TABLE applicants_programmes(
+	id BIGINT(20) AUTO_INCREMENT,
+    programme_short_code VARCHAR(10),
+    applicant_id BIGINT(20),
+    PRIMARY KEY(id),
+    FOREIGN KEY(programme_short_code) REFERENCES programmes(short_code),
+    FOREIGN KEY(applicant_id) REFERENCES applicants(id),
+    UNIQUE(programme_short_code, applicant_id)
+);
+
