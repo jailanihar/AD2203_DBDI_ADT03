@@ -125,3 +125,89 @@ BEGIN
     COMMIT;
 END$$
 DELIMITER ;
+
+SELECT * FROM accounts;
+CALL BankTransfer(400);
+SELECT * FROM accounts;
+DROP PROCEDURE BankTransfer;
+
+DELIMITER $$
+CREATE PROCEDURE BankTransfer(
+	IN fromAcc INT,
+    IN toAcc INT,
+    IN amount DECIMAL(10,2)
+)
+BEGIN
+	START TRANSACTION;
+    UPDATE accounts SET balance = balance - amount WHERE id=fromAcc;
+    UPDATE accounts SET balance = balance + amount WHERE id=toAcc;
+    COMMIT;
+END$$
+DELIMITER ;
+
+CALL BankTransfer(2, 1, 600);
+SELECT * FROM accounts;
+CALL BankTransfer(2, 1, 1200);
+SELECT * FROM accounts;
+CALL BankTransfer(1, 2, 1200);
+DROP PROCEDURE BankTransfer;
+
+DELIMITER $$
+CREATE PROCEDURE BankTransfer(
+	IN fromAcc INT,
+    IN toAcc INT,
+    IN amount DECIMAL(10,2)
+)
+BEGIN
+	DECLARE fromBalance DECIMAL(10,2);
+    
+	START TRANSACTION;
+    SELECT balance INTO fromBalance FROM accounts WHERE id = fromAcc;
+    
+    IF fromBalance >= amount THEN
+		UPDATE accounts SET balance = balance - amount WHERE id=fromAcc;
+		UPDATE accounts SET balance = balance + amount WHERE id=toAcc;
+		COMMIT;
+	ELSE
+		ROLLBACK;
+	END IF;
+END$$
+DELIMITER ;
+
+SELECT * FROM accounts;
+CALL BankTransfer(1,2,200);
+SELECT * FROM accounts;
+CALL BankTransfer(1,2,3000);
+SELECT * FROM accounts;
+DROP PROCEDURE BankTransfer;
+
+DELIMITER $$
+CREATE PROCEDURE BankTransfer(
+	IN fromAcc INT,
+    IN toAcc INT,
+    IN amount DECIMAL(10,2)
+)
+BEGIN
+	DECLARE fromBalance DECIMAL(10,2);
+    DECLARE fromAccExists INT;
+    DECLARE toAccExists INT;
+    
+	START TRANSACTION;
+    SELECT COUNT(*) INTO fromAccExists FROM accounts WHERE id = fromAcc;
+    SELECT COUNT(*) INTO toAccExists FROM accounts WHERE id = toAcc;
+    
+    IF fromAccExists = 1 AND toAccExists = 1 THEN
+		SELECT balance INTO fromBalance FROM accounts WHERE id = fromAcc;
+		
+		IF fromBalance >= amount THEN
+			UPDATE accounts SET balance = balance - amount WHERE id=fromAcc;
+			UPDATE accounts SET balance = balance + amount WHERE id=toAcc;
+			COMMIT;
+		ELSE
+			ROLLBACK;
+		END IF;
+	ELSE
+		ROLLBACK;
+	END IF;
+END$$
+DELIMITER ;
