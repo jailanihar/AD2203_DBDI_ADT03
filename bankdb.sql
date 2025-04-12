@@ -91,3 +91,37 @@ UPDATE accounts SET balance = balance + 200 WHERE id=2;
 -- Since transaction is not used.
 -- Now there is a missing balance of 200 from the transfer.
 SELECT * FROM accounts;
+
+DELIMITER $$
+CREATE PROCEDURE BankTransfer(
+	-- IN fromAcc INT,
+    -- IN toAcc INT,
+    -- IN amount DECIMAL(10,2)
+)
+BEGIN
+	START TRANSACTION;
+    UPDATE accounts SET balance = balance - 200 WHERE id=1;
+    UPDATE accounts SET balance = balance + 200 WHERE id=2;
+    COMMIT;
+END$$
+DELIMITER ;
+
+SELECT * FROM accounts;
+
+CALL BankTransfer();
+
+DROP PROCEDURE BankTransfer;
+
+DELIMITER $$
+CREATE PROCEDURE BankTransfer(
+	-- IN fromAcc INT,
+    -- IN toAcc INT,
+    IN amount DECIMAL(10,2)
+)
+BEGIN
+	START TRANSACTION;
+    UPDATE accounts SET balance = balance - amount WHERE id=1;
+    UPDATE accounts SET balance = balance + amount WHERE id=2;
+    COMMIT;
+END$$
+DELIMITER ;
