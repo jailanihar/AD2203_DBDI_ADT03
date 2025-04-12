@@ -92,30 +92,29 @@ UPDATE accounts SET balance = balance + 200 WHERE id=2;
 -- Now there is a missing balance of 200 from the transfer.
 SELECT * FROM accounts;
 
+-- Run from here
+-- Replacing the end of statement from ; to $$
 DELIMITER $$
-CREATE PROCEDURE BankTransfer(
-	-- IN fromAcc INT,
-    -- IN toAcc INT,
-    -- IN amount DECIMAL(10,2)
-)
+CREATE PROCEDURE BankTransfer()
 BEGIN
 	START TRANSACTION;
     UPDATE accounts SET balance = balance - 200 WHERE id=1;
     UPDATE accounts SET balance = balance + 200 WHERE id=2;
     COMMIT;
 END$$
+-- Change back the end of statement to ;
 DELIMITER ;
+-- To here
 
 SELECT * FROM accounts;
-
+-- Running the procedure
 CALL BankTransfer();
-
+-- Dropping the procedure because we want to improve further.
 DROP PROCEDURE BankTransfer;
 
+-- Procedure that needs value for amount to be transferred.
 DELIMITER $$
 CREATE PROCEDURE BankTransfer(
-	-- IN fromAcc INT,
-    -- IN toAcc INT,
     IN amount DECIMAL(10,2)
 )
 BEGIN
@@ -131,6 +130,7 @@ CALL BankTransfer(400);
 SELECT * FROM accounts;
 DROP PROCEDURE BankTransfer;
 
+-- Procedure that needs values for account id from, accound id to and amount
 DELIMITER $$
 CREATE PROCEDURE BankTransfer(
 	IN fromAcc INT,
@@ -152,6 +152,8 @@ SELECT * FROM accounts;
 CALL BankTransfer(1, 2, 1200);
 DROP PROCEDURE BankTransfer;
 
+-- Procedure to include check if from account has balance more than or
+-- equal to amount transferred.
 DELIMITER $$
 CREATE PROCEDURE BankTransfer(
 	IN fromAcc INT,
@@ -181,6 +183,9 @@ CALL BankTransfer(1,2,3000);
 SELECT * FROM accounts;
 DROP PROCEDURE BankTransfer;
 
+-- Procedure to include check if account ids exist
+-- and to include check if from account has balance more than or
+-- equal to amount transferred.
 DELIMITER $$
 CREATE PROCEDURE BankTransfer(
 	IN fromAcc INT,
@@ -211,3 +216,7 @@ BEGIN
 	END IF;
 END$$
 DELIMITER ;
+
+SELECT * FROM accounts;
+CALL BankTransfer(3,2,200);
+SELECT * FROM accounts;
